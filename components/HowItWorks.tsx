@@ -44,7 +44,7 @@ export default function HowItWorks() {
             How AAMENN works
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
-            We made security simple. You don't need to be a tech expert to protect your memories.
+            We made security simple. You don&apos;t need to be a tech expert to protect your memories.
           </p>
         </div>
 

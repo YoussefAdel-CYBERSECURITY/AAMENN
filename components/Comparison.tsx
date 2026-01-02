@@ -54,7 +54,7 @@ export default function Comparison() {
             Why Choose AAMENN?
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            See how we stack up against traditional cloud storage providers. We don't just store your data; we protect your right to privacy.
+            See how we stack up against traditional cloud storage providers. We don&apos;t just store your data; we protect your right to privacy.
           </p>
         </div>
 

@@ -47,7 +47,7 @@ export default function Hero() {
           </h1>
 
           <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-            Store, organize, and share your life's memories without trading away your data. Zero tracking. Zero ads. 100% encrypted.
+            Store, organize, and share your life&apos;s memories without trading away your data. Zero tracking. Zero ads. 100% encrypted.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto px-4">
@@ -68,7 +68,7 @@ export default function Hero() {
           </form>
 
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 sm:mt-3 px-4">
-            100% spam-free. We won't share your email. Ever.
+            100% spam-free. We won&apos;t share your email. Ever.
           </p>
         </div>
 
