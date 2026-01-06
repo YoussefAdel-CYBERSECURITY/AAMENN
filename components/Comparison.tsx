@@ -1,4 +1,41 @@
+'use client'
+
+import { useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { shouldAnimate } from '@/lib/animations/utils'
+
+gsap.registerPlugin(ScrollTrigger)
+
 export default function Comparison() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const tableRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!shouldAnimate() || !tableRef.current) return
+
+    const ctx = gsap.context(() => {
+      const rows = tableRef.current?.querySelectorAll('.comparison-row')
+
+      if (rows) {
+        gsap.from(rows, {
+          x: -50,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: tableRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none none',
+          },
+        })
+      }
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   const features = [
     {
       name: 'End-to-end Encryption',
@@ -47,41 +84,41 @@ export default function Comparison() {
   ]
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section ref={sectionRef} className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-black/80 relative overflow-hidden" style={{ zIndex: 10 }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-12 sm:mb-16 px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-3 sm:mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
             Why Choose AAMENN?
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-700 dark:text-gray-400 max-w-3xl mx-auto">
             See how we stack up against traditional cloud storage providers. We don&apos;t just store your data; we protect your right to privacy.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden">
+        <div ref={tableRef} className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border-2 border-gray-300 dark:border-blue-500/20">
           <div className="p-4 sm:p-6 lg:p-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-200 dark:border-gray-700 gap-4">
-              <div className="text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-300 dark:border-gray-800 gap-4">
+              <div className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-500 uppercase tracking-wider">
                 Features<br className="hidden sm:block" /><span className="sm:hidden"> </span>Comparison
               </div>
               <div className="flex gap-8 sm:gap-12 lg:gap-16">
                 <div className="text-center">
                   <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-primary dark:text-accent" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span className="font-bold text-sm sm:text-base text-primary dark:text-white">AAMENN</span>
+                    <span className="font-bold text-sm sm:text-base text-gray-900 dark:text-white">AAMENN</span>
                   </div>
-                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Privacy First Storage</p>
+                  <p className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-500">Privacy First Storage</p>
                 </div>
                 <div className="text-center">
                   <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
-                    <span className="font-bold text-sm sm:text-base text-gray-700 dark:text-gray-300">Others</span>
+                    <span className="font-bold text-sm sm:text-base text-gray-600 dark:text-gray-400">Others</span>
                   </div>
-                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Typical Cloud Services</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-600">Typical Cloud Services</p>
                 </div>
               </div>
             </div>
@@ -90,17 +127,17 @@ export default function Comparison() {
               {features.map((feature, index) => (
                 <div
                   key={feature.name}
-                  className={`flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 sm:py-6 gap-3 sm:gap-0 ${
-                    index !== features.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''
+                  className={`comparison-row flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 sm:py-6 gap-3 sm:gap-0 ${
+                    index !== features.length - 1 ? 'border-b border-gray-300 dark:border-gray-800' : ''
                   }`}
                 >
                   <div className="flex items-start gap-3 sm:gap-4 flex-1">
-                    <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300">
+                    <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400">
                       {feature.icon}
                     </div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white mb-1">{feature.name}</h3>
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{feature.description}</p>
+                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-500">{feature.description}</p>
                     </div>
                   </div>
 
@@ -131,8 +168,8 @@ export default function Comparison() {
             </div>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-800 px-4 sm:px-8 py-3 sm:py-4 text-center">
-            <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
+          <div className="bg-gray-100 dark:bg-gray-800 px-4 sm:px-8 py-3 sm:py-4 text-center">
+            <p className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-500">
               * Comparison based on standard free-tier offerings of major cloud providers as of Oct 2023.
             </p>
           </div>

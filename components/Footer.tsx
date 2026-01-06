@@ -1,40 +1,91 @@
+'use client'
+
 import Link from 'next/link'
+import { useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { shouldAnimate } from '@/lib/animations/utils'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null)
+  const iconsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!shouldAnimate() || !footerRef.current) return
+
+    const ctx = gsap.context(() => {
+      gsap.from(footerRef.current, {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: footerRef.current,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        },
+      })
+    }, footerRef)
+
+    return () => ctx.revert()
+  }, [])
+
+  useEffect(() => {
+    if (!iconsRef.current) return
+
+    const icons = iconsRef.current.querySelectorAll('a')
+    icons.forEach((icon) => {
+      const onEnter = () => gsap.to(icon, { y: -5, duration: 0.3, ease: 'power2.out' })
+      const onLeave = () => gsap.to(icon, { y: 0, duration: 0.3, ease: 'power2.out' })
+
+      icon.addEventListener('mouseenter', onEnter)
+      icon.addEventListener('mouseleave', onLeave)
+    })
+
+    return () => {
+      icons.forEach((icon) => {
+        icon.removeEventListener('mouseenter', () => {})
+        icon.removeEventListener('mouseleave', () => {})
+      })
+    }
+  }, [])
+
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+    <footer ref={footerRef} className="bg-white dark:bg-black/80 border-t border-gray-200 dark:border-gray-800" style={{ zIndex: 10, position: 'relative' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-8 sm:mb-12">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-600 rounded-lg flex items-center justify-center">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
                 </svg>
               </div>
-              <span className="text-lg sm:text-xl font-bold text-gray-700 dark:text-gray-300">AAMENN</span>
+              <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">AAMENN</span>
             </div>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">Your photos. Your privacy.</p>
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500">
+            <p className="text-sm sm:text-base text-gray-400 mb-1 sm:mb-2">Your photos. Your privacy.</p>
+            <p className="text-xs sm:text-sm text-gray-500">
               Secure cloud storage for the modern web.
             </p>
           </div>
 
           <div>
-            <h3 className="font-bold text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-3 sm:mb-4">PRODUCT</h3>
+            <h3 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white mb-3 sm:mb-4">PRODUCT</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link href="#features" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                <Link href="#features" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Features
                 </Link>
               </li>
               <li>
-                <Link href="#security" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                <Link href="#security" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Security
                 </Link>
               </li>
               <li>
-                <Link href="#pricing" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                <Link href="#pricing" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Pricing
                 </Link>
               </li>
@@ -42,20 +93,20 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-3 sm:mb-4">COMPANY</h3>
+            <h3 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white mb-3 sm:mb-4">COMPANY</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link href="#about" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white transition">
+                <Link href="#about" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="#blog" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white transition">
+                <Link href="#blog" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="#contact" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white transition">
+                <Link href="#contact" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Contact
                 </Link>
               </li>
@@ -63,20 +114,20 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-3 sm:mb-4">LEGAL</h3>
+            <h3 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white mb-3 sm:mb-4">LEGAL</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link href="#privacy" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white transition">
+                <Link href="#privacy" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#terms" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white transition">
+                <Link href="#terms" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="#cookies" className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white transition">
+                <Link href="#cookies" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition">
                   Cookie Policy
                 </Link>
               </li>
@@ -84,16 +135,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 sm:pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 text-center md:text-left">
+        <div className="pt-6 sm:pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
+          <p className="text-xs sm:text-sm text-gray-500 text-center md:text-left">
             © 2023 AAMENN Inc. All rights reserved.
           </p>
-          <div className="flex gap-5 sm:gap-6">
+          <div ref={iconsRef} className="flex gap-5 sm:gap-6">
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-primary dark:hover:text-white transition"
+              className="text-gray-400 hover:text-blue-400 transition"
               aria-label="Instagram"
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -104,7 +155,7 @@ export default function Footer() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-primary dark:hover:text-white transition"
+              className="text-gray-400 hover:text-blue-400 transition"
               aria-label="Facebook"
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
