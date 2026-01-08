@@ -24,6 +24,7 @@ export default function CTA() {
           duration: 0.5,
           stagger: 0.08,
           ease: 'power2.out',
+          clearProps: 'all',
           scrollTrigger: {
             trigger: contentRef.current,
             start: 'top 75%',

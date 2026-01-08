@@ -20,24 +20,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const savedTheme = localStorage.getItem('theme') as Theme
     if (savedTheme) {
       setTheme(savedTheme)
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
-    } else {
-      // Default to dark theme
-      document.documentElement.classList.add('dark')
     }
   }, [])
 
   useEffect(() => {
     if (mounted) {
       localStorage.setItem('theme', theme)
+      const html = document.documentElement
+      
       if (theme === 'dark') {
-        document.documentElement.classList.add('dark')
+        html.classList.remove('light')
+        html.classList.add('dark')
+        html.style.colorScheme = 'dark'
       } else {
-        document.documentElement.classList.remove('dark')
+        html.classList.remove('dark')
+        html.classList.add('light')
+        html.style.colorScheme = 'light'
       }
     }
   }, [theme, mounted])
